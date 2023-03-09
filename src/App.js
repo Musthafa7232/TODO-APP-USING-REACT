@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import Form from "./components/Form";
+import TodoList from "./components/TodoList";
+import React, { useState, useEffect } from "react";
 function App() {
+  
+  let todolocal = JSON.parse(localStorage.getItem("todos")) || [];
+  const [inputForm, setInputForm] = useState("");
+  const [todos, setTodos] = useState(todolocal);
+
+  useEffect(() => {
+    saveLocalTodos();
+  }, [todos]);
+
+  const saveLocalTodos = () => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App py-5">
+      <h1 className="text-center">Todo App Using React</h1>
+      <Form
+        inputForm={inputForm}
+        todos={todos}
+        setTodos={setTodos}
+        setInputForm={setInputForm}
+      />
+      <TodoList setTodos={setTodos} todos={todos} />
     </div>
   );
 }
